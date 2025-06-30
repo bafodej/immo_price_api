@@ -16,7 +16,7 @@ df_lille = df[
 ].copy()
 
 # Filtrage BORDEAUX
-df_bordeaux = df[
+df_bdx = df[
     (df['Commune'] == 'BORDEAUX') &
     (df['Nature mutation'] == 'Vente') &
     (df['Surface reelle bati'].notna()) &
@@ -24,17 +24,17 @@ df_bordeaux = df[
 ].copy()
 
 # Conversion en float
-for df_city in [df_lille, df_bordeaux]:
+for df_city in [df_lille, df_bdx]:
     df_city['Valeur fonciere'] = df_city['Valeur fonciere'].astype(str).str.replace(',', '.').str.replace(' ', '').astype(float)
     df_city['Surface reelle bati'] = df_city['Surface reelle bati'].astype(str).str.replace(',', '.').str.replace(' ', '').astype(float)
 
 # Calcul du prix au m²
 df_lille['prix_m2'] = df_lille['Valeur fonciere'] / df_lille['Surface reelle bati']
-df_bordeaux['prix_m2'] = df_bordeaux['Valeur fonciere'] / df_bordeaux['Surface reelle bati']
+df_bdx['prix_m2'] = df_bdx['Valeur fonciere'] / df_bdx['Surface reelle bati']
 
 # Export
 os.makedirs("data", exist_ok=True)
 df_lille.to_csv("data/lille_2022.csv", index=False)
-df_bordeaux.to_csv("data/bordeaux_2022.csv", index=False)
+df_bdx.to_csv("data/bordeaux_2022.csv", index=False)
 
 print("Export terminé.")
