@@ -41,6 +41,7 @@ API FastAPI
 ### Prérequis
 - Python 3.8+
 - pip
+- Fast Api
 
 ### 1. Cloner le projet
 ```bash
