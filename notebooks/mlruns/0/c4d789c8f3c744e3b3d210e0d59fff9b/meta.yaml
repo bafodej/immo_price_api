@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/bvfode/Desktop/immo_price_api/notebooks/mlruns/0/c4d789c8f3c744e3b3d210e0d59fff9b/artifacts
+end_time: 1765450068805
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: c4d789c8f3c744e3b3d210e0d59fff9b
+run_name: test_generalisation_bordeaux
+run_uuid: c4d789c8f3c744e3b3d210e0d59fff9b
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1765450068796
+status: 3
+tags: []
+user_id: bvfode

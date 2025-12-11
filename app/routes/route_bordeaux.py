@@ -1,8 +1,15 @@
 from fastapi import APIRouter, HTTPException
-import joblib
 import pandas as pd
+import mlflow.sklearn
 import os
 from ..schemas.prediction import PredictionInput, PredictionOutput
+
+# Configuration MLflow
+MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI", "file:./notebooks/mlruns")
+mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+
+# Bordeaux utilise le modèle Lille
+BORDEAUX_RUN_ID = "cc34f04d13ee4fd3b984a7d16ad7d919"
 
 router = APIRouter()
 
@@ -16,21 +23,8 @@ async def load_bordeaux_models():
     global bordeaux_model, bordeaux_scaler
     
     try:
-        # Chargement du modèle Bordeaux (même modèle Lille)
-        model_path = "models/lille_appartements.pkl"
-        if os.path.exists(model_path):
-            bordeaux_model = joblib.load(model_path)
-            print(" Modèle Bordeaux chargé")
-        else:
-            print(f" Modèle Bordeaux non trouvé: {model_path}")
-        
-        # Chargement du scaler Bordeaux (même scaler Lille)
-        scaler_path = "models/scaler_lille_apt.pkl"
-        if os.path.exists(scaler_path):
-            bordeaux_scaler = joblib.load(scaler_path)
-            print(" Scaler Bordeaux chargé")
-        else:
-            print(f" Scaler Bordeaux non trouvé: {scaler_path}")
+        bordeaux_model = mlflow.sklearn.load_model(f"runs:/{BORDEAUX_RUN_ID}/model")
+        bordeaux_scaler = mlflow.sklearn.load_model(f"runs:/{BORDEAUX_RUN_ID}/scaler")
             
     except Exception as e:
         print(f" Erreur chargement Bordeaux: {e}")

@@ -1,0 +1,15 @@
+artifact_uri: file:///Users/bvfode/Desktop/immo_price_api/notebooks/mlruns/273489206835104918/d4a9e87b8c0a40839f385f783772ead7/artifacts
+end_time: 1765445630270
+entry_point_name: ''
+experiment_id: '273489206835104918'
+lifecycle_stage: active
+run_id: d4a9e87b8c0a40839f385f783772ead7
+run_name: appartements_random_forest_lille_2024
+run_uuid: d4a9e87b8c0a40839f385f783772ead7
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1765445630264
+status: 4
+tags: []
+user_id: bvfode

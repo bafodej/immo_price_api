@@ -1,8 +1,15 @@
 from fastapi import APIRouter, HTTPException
-import joblib
+import mlflow.sklearn  
 import pandas as pd
 import os
 from ..schemas.prediction import PredictionInput, PredictionOutput
+
+# Configuration MLflow
+MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI", "file:./notebooks/mlruns")
+mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
+
+# Run ID du modèle Lille
+LILLE_APT_RUN_ID = "cc34f04d13ee4fd3b984a7d16ad7d919"
 
 router = APIRouter()
 
@@ -12,30 +19,18 @@ lille_scaler = None
 
 @router.on_event("startup")
 async def load_lille_models():
-    """Charger les modèles Lille au démarrage"""
+    """Charger les modèles Lille depuis MLflow au démarrage"""
     global lille_model, lille_scaler
     
     try:
-        # Chargement du modèle Lille
-        model_path = "models/lille_appartements.pkl"
-        if os.path.exists(model_path):
-            lille_model = joblib.load(model_path)
-            print(" Modèle Lille chargé")
-        else:
-            print(f" Modèle Lille non trouvé: {model_path}")
-        
-        # Chargement du scaler Lille
-        scaler_path = "models/scaler_lille_apt.pkl"
-        if os.path.exists(scaler_path):
-            lille_scaler = joblib.load(scaler_path)
-            print(" Scaler Lille chargé")
-        else:
-            print(f" Scaler Lille non trouvé: {scaler_path}")
-            
+        print("Chargement modele Lille depuis MLflow...")
+        lille_model = mlflow.sklearn.load_model(f"runs:/{LILLE_APT_RUN_ID}/model")
+        lille_scaler = mlflow.sklearn.load_model(f"runs:/{LILLE_APT_RUN_ID}/scaler")
+        print("Modele Lille charge avec succes")
     except Exception as e:
-        print(f" Erreur chargement Lille: {e}")
+        print(f"Erreur chargement Lille: {e}")
 
- 
+
 async def predict_lille_internal(data: PredictionInput) -> PredictionOutput:
     """Fonction interne de prédiction Lille"""
     
